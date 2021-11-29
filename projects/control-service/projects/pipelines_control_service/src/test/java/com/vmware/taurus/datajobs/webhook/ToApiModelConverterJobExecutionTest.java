@@ -82,8 +82,8 @@ public class ToApiModelConverterJobExecutionTest {
 
     @Test
     public void testDifferentStatus() {
-        expected.setStatus(DataJobExecution.StatusEnum.FAILED);
-        toConvert.setStatus(ExecutionStatus.FAILED);
+        expected.setStatus(DataJobExecution.StatusEnum.PLATFORM_ERROR);
+        toConvert.setStatus(ExecutionStatus.PLATFORM_ERROR);
         var actual = ToApiModelConverter.jobExecutionToConvert(toConvert);
 
         Assertions.assertEquals(expected, actual);

@@ -5,6 +5,22 @@
 
 package com.vmware.taurus.graphql.it;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.time.OffsetDateTime;
+import java.util.List;
+
+import org.hamcrest.Matchers;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
 import com.vmware.taurus.ControlplaneApplication;
 import com.vmware.taurus.datajobs.it.common.BaseIT;
 import com.vmware.taurus.datajobs.it.common.JobExecutionUtil;
@@ -14,21 +30,6 @@ import com.vmware.taurus.service.model.DataJob;
 import com.vmware.taurus.service.model.DataJobExecution;
 import com.vmware.taurus.service.model.ExecutionStatus;
 import com.vmware.taurus.service.model.JobConfig;
-import org.hamcrest.Matchers;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import java.time.OffsetDateTime;
-import java.util.List;
-
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = ControlplaneApplication.class)
 public class GraphQLExecutionsIT extends BaseIT {
@@ -64,11 +65,11 @@ public class GraphQLExecutionsIT extends BaseIT {
 
       OffsetDateTime now = OffsetDateTime.now();
       this.dataJobExecution1 = JobExecutionUtil.createDataJobExecution(
-            jobExecutionRepository, "testId1", dataJob1, now, now, ExecutionStatus.FINISHED);
+            jobExecutionRepository, "testId1", dataJob1, now, now, ExecutionStatus.SUCCEEDED);
       this.dataJobExecution2 = JobExecutionUtil.createDataJobExecution(
-            jobExecutionRepository, "testId2", dataJob2, now.minusSeconds(1), now.minusSeconds(1), ExecutionStatus.RUNNING);
+            jobExecutionRepository,"testId2", dataJob2, now.minusSeconds(1), now.minusSeconds(1), ExecutionStatus.USER_ERROR);
       this.dataJobExecution3 = JobExecutionUtil.createDataJobExecution(
-            jobExecutionRepository, "testId3", dataJob3, now.minusSeconds(10), now.minusSeconds(10), ExecutionStatus.SUBMITTED);
+            jobExecutionRepository,"testId3", dataJob3, now.minusSeconds(10), now.minusSeconds(10), ExecutionStatus.SUBMITTED);
    }
 
    private static String getQuery() {

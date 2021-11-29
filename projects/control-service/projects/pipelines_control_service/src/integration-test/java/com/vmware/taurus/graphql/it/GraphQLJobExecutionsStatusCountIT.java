@@ -77,8 +77,8 @@ public class GraphQLJobExecutionsStatusCountIT extends BaseDataJobDeploymentIT {
       var expectedEndTimeLarger = OffsetDateTime.now();
       var expectedEndTimeSmaller = OffsetDateTime.now().minusDays(1);
 
-      addJobExecution(expectedEndTimeLarger, "testId", ExecutionStatus.FINISHED, jobName);
-      addJobExecution(expectedEndTimeSmaller, "testId2", ExecutionStatus.FINISHED, jobName);
+      addJobExecution(expectedEndTimeLarger, "testId", ExecutionStatus.SUCCEEDED, jobName);
+      addJobExecution(expectedEndTimeSmaller, "testId2", ExecutionStatus.SUCCEEDED, jobName);
 
       mockMvc.perform(MockMvcRequestBuilders.get(uri).queryParam("query", getQuery(jobName)).with(user(username)))
               .andExpect(status().is(200))
@@ -102,10 +102,10 @@ public class GraphQLJobExecutionsStatusCountIT extends BaseDataJobDeploymentIT {
       var expectedEndTimeLarger = OffsetDateTime.now();
       var expectedEndTimeSmaller = OffsetDateTime.now().minusDays(1);
 
-      addJobExecution(expectedEndTimeLarger, "testId", ExecutionStatus.FINISHED, jobName);
-      addJobExecution(expectedEndTimeSmaller, "testId2", ExecutionStatus.FINISHED, jobName);
-      addJobExecution(expectedEndTimeLarger, "testI3", ExecutionStatus.FAILED, jobName);
-      addJobExecution(expectedEndTimeSmaller, "testId4", ExecutionStatus.FAILED, jobName);
+      addJobExecution(expectedEndTimeLarger, "testId", ExecutionStatus.SUCCEEDED, jobName);
+      addJobExecution(expectedEndTimeSmaller, "testId2", ExecutionStatus.SUCCEEDED, jobName);
+      addJobExecution(expectedEndTimeLarger, "testI3", ExecutionStatus.PLATFORM_ERROR, jobName);
+      addJobExecution(expectedEndTimeSmaller, "testId4", ExecutionStatus.PLATFORM_ERROR, jobName);
 
       mockMvc.perform(MockMvcRequestBuilders.get(uri).queryParam("query", getQuery(jobName)).with(user(username)))
               .andExpect(status().is(200))
@@ -119,8 +119,8 @@ public class GraphQLJobExecutionsStatusCountIT extends BaseDataJobDeploymentIT {
    public void testExecutionStatusCount_expectOneSuccessfulOneFailed(String jobName, String username) throws Exception {
       var expectedEndTimeLarger = OffsetDateTime.now();
 
-      addJobExecution(expectedEndTimeLarger, "testId", ExecutionStatus.FINISHED, jobName);
-      addJobExecution(expectedEndTimeLarger, "testI3", ExecutionStatus.FAILED, jobName);
+      addJobExecution(expectedEndTimeLarger, "testId", ExecutionStatus.SUCCEEDED, jobName);
+      addJobExecution(expectedEndTimeLarger, "testI3", ExecutionStatus.PLATFORM_ERROR, jobName);
 
       mockMvc.perform(MockMvcRequestBuilders.get(uri).queryParam("query", getQuery(jobName)).with(user(username)))
               .andExpect(status().is(200))

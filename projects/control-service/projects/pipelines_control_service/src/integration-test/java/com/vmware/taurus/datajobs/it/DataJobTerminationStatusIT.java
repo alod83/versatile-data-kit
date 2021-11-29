@@ -104,7 +104,7 @@ public class DataJobTerminationStatusIT extends BaseDataJobDeploymentIT {
         // Check the data job execution status
         String location = dataJobExecutionResponse.getResponse().getHeader("location");
         String executionId = location.substring(location.lastIndexOf("/") + 1);
-        checkDataJobExecutionStatus(executionId, DataJobExecution.StatusEnum.FINISHED, opId, jobName, teamName, username);
+        checkDataJobExecutionStatus(executionId, DataJobExecution.StatusEnum.SUCCEEDED, opId, jobName, teamName, username);
 
         // Wait for the job execution to complete, polling every 5 seconds
         // See: https://github.com/awaitility/awaitility/wiki/Usage
@@ -137,7 +137,7 @@ public class DataJobTerminationStatusIT extends BaseDataJobDeploymentIT {
         assertTrue(match.get().trim().endsWith("0.0"), "The value of the taurus_datajob_termination_status metrics does not match");
 
         // Check the data job execution status
-        checkDataJobExecutionStatus(executionId, DataJobExecution.StatusEnum.FINISHED, opId, jobName, teamName, username);
+        checkDataJobExecutionStatus(executionId, DataJobExecution.StatusEnum.SUCCEEDED, opId, jobName, teamName, username);
     }
 
     private String scrapeMetrics() throws Exception {
